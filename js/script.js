@@ -1,4 +1,3 @@
-// 1. Ambil semua elemen dari halaman HTML
 const inputNama = document.getElementById('namaBarang');
 const inputHarga = document.getElementById('hargaUang');
 const inputKategori = document.getElementById('kategoriBarang');
@@ -6,15 +5,13 @@ const tombolTambah = document.getElementById('tombolTambah');
 const daftarCatatan = document.getElementById('daftarCatatan');
 const totalSaldoTeks = document.getElementById('totalSaldo');
 
-// Mengambil data dari memori browser (Local Storage)
 let listBelanja = JSON.parse(localStorage.getItem('transaksiKu')) || [];
 let totalUang = 0;
 let grafikKue = null;
 
-// 2. BAGIAN KODE UNTUK GRAFIK KUE (PIE CHART)
 function perbaruiGrafik() {
     const elemenGrafik = document.getElementById('grafikKategori');
-    if (!elemenGrafik) return; // Cari tempat canvas, jika tidak ada jangan digambar
+    if (!elemenGrafik) return;
 
     const konteksGrafik = elemenGrafik.getContext('2d');
     
@@ -33,15 +30,14 @@ function perbaruiGrafik() {
     });
 
     if (grafikKue) {
-        grafikKue.destroy(); // Hapus grafik lama agar tidak menumpuk error
+        grafikKue.destroy();
     }
 
-    // Jika belum ada data belanja, biarkan kosong dulu
     if (listBelanja.length === 0) {
         return;
     }
 
-    // Gambar grafik lingkaran baru
+    // Membuat grafik dengan ukuran stabil bawaan canvas
     grafikKue = new Chart(konteksGrafik, {
         type: 'pie',
         data: {
@@ -50,15 +46,10 @@ function perbaruiGrafik() {
                 data: [totalMakanan, totalTransport, totalHiburan],
                 backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
             }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false
         }
     });
 }
 
-// 3. Fungsi untuk memunculkan daftar data ke layar website
 function tampilkanData() {
     daftarCatatan.innerHTML = "";
     totalUang = 0;
@@ -86,12 +77,9 @@ function tampilkanData() {
     });
 
     totalSaldoTeks.innerText = "Rp " + totalUang.toLocaleString();
-
-    // Jalankan pembaruan grafik
     perbaruiGrafik();
 }
 
-// 4. Perintah saat tombol "Tambah Transaksi" dipencet
 tombolTambah.onclick = function() {
     const namaKetik = inputNama.value;
     const hargaKetik = inputHarga.value;
@@ -117,7 +105,6 @@ tombolTambah.onclick = function() {
     tampilkanData();
 };
 
-// PENGAMAN UTAMA: Fungsi baru berjalan otomatis hanya KETIKA HALAMAN WEB SUDAH SELESAI DI-LOAD TOTAL
 window.onload = function() {
     tampilkanData();
 };
