@@ -37,14 +37,14 @@ function perbaruiGrafik() {
         return;
     }
 
-    // Membuat grafik dengan ukuran stabil bawaan canvas
     grafikKue = new Chart(konteksGrafik, {
         type: 'pie',
         data: {
             labels: ['Makanan', 'Transport', 'Hiburan'],
             datasets: [{
                 data: [totalMakanan, totalTransport, totalHiburan],
-                backgroundColor: ['#ff6384', '#36a2eb', '#ffce56']
+                // WARNA BARU: TEMA PASTEL ESTETIK
+                backgroundColor: ['#ffb7b2', '#b5ead7', '#ffdac1']
             }]
         }
     });
