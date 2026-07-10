@@ -6,77 +6,15 @@ const tombolTambah = document.getElementById('tombolTambah');
 const daftarCatatan = document.getElementById('daftarCatatan');
 const totalSaldoTeks = document.getElementById('totalSaldo');
 
-// Fitur Wajib: Mengambil data lama yang tersimpan di memori browser (Local Storage)
+// Mengambil data dari memori browser (Local Storage)
 let listBelanja = JSON.parse(localStorage.getItem('transaksiKu')) || [];
 let totalUang = 0;
 let grafikKue = null;
 
-// 2. Fungsi untuk memunculkan data ke layar website
-function tampilkanData() {
-    daftarCatatan.innerHTML = "";
-    totalUang = 0;
-
-    listBelanja.forEach(function(barang, indeks) {
-        totalUang = totalUang + Number(barang.harga);
-
-        const barisBaru = document.createElement('li');
-        barisBaru.innerHTML = barang.nama + " - Rp " + Number(barang.harga).toLocaleString() + " (" + barang.kategori + ") ";
-        
-        const tombolHapus = document.createElement('button');
-        tombolHapus.innerText = "Hapus";
-        tombolHapus.style.width = "auto";
-        tombolHapus.style.backgroundColor = "#e74c3c";
-        tombolHapus.style.marginLeft = "10px";
-        
-        tombolHapus.onclick = function() {
-            listBelanja.splice(indeks, 1);
-            // Simpan perubahan setelah dihapus ke Local Storage
-            localStorage.setItem('transaksiKu', JSON.stringify(listBelanja));
-            tampilkanData();
-        };
-
-        barisBaru.appendChild(tombolHapus);
-        daftarCatatan.appendChild(barisBaru);
-    });
-
-    totalSaldoTeks.innerText = "Rp " + totalUang.toLocaleString();
-
-    // Jalankan grafik setelah data siap
-    perbaruiGrafik();
-}
-
-// 3. Perintah saat tombol "Tambah Transaksi" dipencet
-tombolTambah.onclick = function() {
-    const namaKetik = inputNama.value;
-    const hargaKetik = inputHarga.value;
-    const kategoriPilih = inputKategori.value;
-
-    if (namaKetik === "" || hargaKetik === "") {
-        alert("Maaf, semua kotak harus diisi terlebih dahulu ya!");
-        return;
-    }
-
-    const paketBarangBaru = {
-        nama: namaKetik,
-        harga: hargaKetik,
-        kategori: kategoriPilih
-    };
-
-    listBelanja.push(paketBarangBaru);
-
-    // Fitur Wajib: Simpan data baru ke dalam Local Storage browser
-    localStorage.setItem('transaksiKu', JSON.stringify(listBelanja));
-
-    inputNama.value = "";
-    inputHarga.value = "";
-
-    tampilkanData();
-};
-
-// 4. BAGIAN KODE UNTUK GRAFIK KUE (PIE CHART)
+// 2. BAGIAN KODE UNTUK GRAFIK KUE (PIE CHART)
 function perbaruiGrafik() {
     const elemenGrafik = document.getElementById('grafikKategori');
-    if (!elemenGrafik) return;
+    if (!elemenGrafik) return; // Cari tempat canvas, jika tidak ada jangan digambar
 
     const konteksGrafik = elemenGrafik.getContext('2d');
     
@@ -95,14 +33,15 @@ function perbaruiGrafik() {
     });
 
     if (grafikKue) {
-        grafikKue.destroy();
+        grafikKue.destroy(); // Hapus grafik lama agar tidak menumpuk error
     }
 
-    // Jika belum ada data sama sekali, jangan gambar apa-apa dulu
+    // Jika belum ada data belanja, biarkan kosong dulu
     if (listBelanja.length === 0) {
         return;
     }
 
+    // Gambar grafik lingkaran baru
     grafikKue = new Chart(konteksGrafik, {
         type: 'pie',
         data: {
@@ -119,5 +58,66 @@ function perbaruiGrafik() {
     });
 }
 
-// Jalankan fungsi otomatis saat halaman pertama kali dibuka
-tampilkanData();
+// 3. Fungsi untuk memunculkan daftar data ke layar website
+function tampilkanData() {
+    daftarCatatan.innerHTML = "";
+    totalUang = 0;
+
+    listBelanja.forEach(function(barang, indeks) {
+        totalUang = totalUang + Number(barang.harga);
+
+        const barisBaru = document.createElement('li');
+        barisBaru.innerHTML = barang.nama + " - Rp " + Number(barang.harga).toLocaleString() + " (" + barang.kategori + ") ";
+        
+        const tombolHapus = document.createElement('button');
+        tombolHapus.innerText = "Hapus";
+        tombolHapus.style.width = "auto";
+        tombolHapus.style.backgroundColor = "#e74c3c";
+        tombolHapus.style.marginLeft = "10px";
+        
+        tombolHapus.onclick = function() {
+            listBelanja.splice(indeks, 1);
+            localStorage.setItem('transaksiKu', JSON.stringify(listBelanja));
+            tampilkanData();
+        };
+
+        barisBaru.appendChild(tombolHapus);
+        daftarCatatan.appendChild(barisBaru);
+    });
+
+    totalSaldoTeks.innerText = "Rp " + totalUang.toLocaleString();
+
+    // Jalankan pembaruan grafik
+    perbaruiGrafik();
+}
+
+// 4. Perintah saat tombol "Tambah Transaksi" dipencet
+tombolTambah.onclick = function() {
+    const namaKetik = inputNama.value;
+    const hargaKetik = inputHarga.value;
+    const kategoriPilih = inputKategori.value;
+
+    if (namaKetik === "" || hargaKetik === "") {
+        alert("Maaf, semua kotak harus diisi terlebih dahulu ya!");
+        return;
+    }
+
+    const paketBarangBaru = {
+        nama: namaKetik,
+        harga: hargaKetik,
+        kategori: kategoriPilih
+    };
+
+    listBelanja.push(paketBarangBaru);
+    localStorage.setItem('transaksiKu', JSON.stringify(listBelanja));
+
+    inputNama.value = "";
+    inputHarga.value = "";
+
+    tampilkanData();
+};
+
+// PENGAMAN UTAMA: Fungsi baru berjalan otomatis hanya KETIKA HALAMAN WEB SUDAH SELESAI DI-LOAD TOTAL
+window.onload = function() {
+    tampilkanData();
+};
