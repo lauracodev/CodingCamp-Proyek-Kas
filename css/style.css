@@ -1,0 +1,37 @@
+/* Mengatur font/tulisan seluruh halaman */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    padding: 20px;
+}
+
+/* Membuat judul berada di tengah */
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+/* Mengubah tampilan kotak-kotak menu biar rapi */
+div {
+    background-color: white;
+    padding: 20px;
+    margin: 15px auto;
+    max-width: 500px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* Mengubah tampilan tombol */
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #2980b9;
+}

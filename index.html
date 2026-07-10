@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dompet Digital Belajarku</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Link Penghubung Grafik Jaminan Anti Gagal -->
+    <script src="https://jsdelivr.net"></script>
+</head>
+<body>
+
+    <h1>Expense & Budget Visualizer</h1>
+
+    <!-- 1. KOTAK TOTAL SALDO -->
+    <div>
+        <h3>TOTAL SALDO</h3>
+        <h2 id="totalSaldo">Rp 0</h2>
+    </div>
+
+    <!-- 2. KOTAK TEMPAT ISI DATA -->
+    <div>
+        <h3>Tambah Transaksi Baru</h3>
+        <p>Nama Barang: <input type="text" id="namaBarang" placeholder="Contoh: Cilok"></p>
+        <p>Harga Uang: <input type="number" id="hargaUang" placeholder="Contoh: 15000"></p>
+        <p>Kategori: 
+            <select id="kategoriBarang">
+                <option value="Makanan">Makanan</option>
+                <option value="Transport">Transport</option>
+                <option value="Hiburan">Hiburan</option>
+            </select>
+        </p>
+        <button id="tombolTambah">Tambah Transaksi</button>
+    </div>
+
+    <!-- 3. KOTAK DAFTAR CATATAN BELANJA -->
+    <div>
+        <h3>Daftar Pengeluaran</h3>
+        <ul id="daftarCatatan">
+            <!-- Catatan belanjaan akan muncul di sini secara otomatis -->
+        </ul>
+    </div>
+
+    <!-- 4. KOTAK GRAFIK KUE -->
+    <div>
+        <h3>Grafik Pengeluaran</h3>
+        <div style="position: relative; height: 250px; width: 100%;">
+            <canvas id="grafikKategori"></canvas>
+        </div>
+    </div>
+
+    <!-- Menyambungkan ke file "otak" JavaScript kita -->
+    <script src="js/script.js"></script>
+</body>
+</html>
