@@ -43,8 +43,8 @@ function perbaruiGrafik() {
             labels: ['Makanan', 'Transport', 'Hiburan'],
             datasets: [{
                 data: [totalMakanan, totalTransport, totalHiburan],
-                // WARNA BARU: TEMA PASTEL ESTETIK
-                backgroundColor: ['#ffb7b2', '#b5ead7', '#ffdac1']
+                // WARNA BARU: TEMA GALAXY PASTEL (Ungu Soft, Biru Muda, Pink Soft)
+                backgroundColor: ['#dec4ff', '#b2e2f2', '#ffc4e1']
             }]
         }
     });
